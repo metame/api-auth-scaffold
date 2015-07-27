@@ -1,5 +1,7 @@
 var express = require('express'),
     router = express.Router(),
+    config = require('../config'),
+    jwt = require('jsonwebtoken'),
     db = require('../lib/mongodb'),
     users = db.get('users');
 
@@ -8,9 +10,6 @@ router.get('/', function(req, res){
 });
 
 router.get('/users', function(req, res){
-    var db = req.db,
-        users = db.get('users');
-
     users.find({}).on('complete', function(err, docs){
         if(err) throw err;
 
@@ -22,7 +21,7 @@ router.post('/authenticate', function(req, res){
 
     // find the user
     users.findOne({
-        name: req.body.name
+        username: req.body.username
     }, function(err, user) {
 
         if (err) throw err;
@@ -38,7 +37,7 @@ router.post('/authenticate', function(req, res){
 
                 // if user is found and password is right
                 // create a token
-                var token = jwt.sign(user, app.get('superSecret'), {
+                var token = jwt.sign(user, config.secret, {
                     expiresInMinutes: 1440 // expires in 24 hours
                 });
 
@@ -65,7 +64,7 @@ router.use(function(req, res, next) {
     if (token) {
 
         // verifies secret and checks exp
-        jwt.verify(token, app.get('superSecret'), function(err, decoded) {      
+        jwt.verify(token, config.secret, function(err, decoded) {      
             if (err) {
                 return res.json({ success: false, message: 'Failed to authenticate token.' });    
             } else {

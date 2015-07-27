@@ -21,23 +21,6 @@ app.get('/', function(req, res){
     res.send('Hello! The API is at ' + config.host + ':' + config.port + '/api');
 });
 
-app.get('/setup', function(req, res) {
-
-  // create a sample user
-  var adminUser = { 
-    name: 'Merlin', 
-    password: 'password',
-    admin: true 
-  };
-
-  db.get('users').insert(adminUser).on('complete', function(err, user){
-    if(err) throw err;
-
-    console.log("User created successfully!");
-    res.json({ success: true });
-  });
-});
-
 app.use('/api', require('./routes/api'));
 
 // start server
