@@ -1,0 +1,25 @@
+{
+  "name": "apiAuthScaffold",
+  "version": "1.0.0",
+  "description": "boilerplate for api token authentication",
+  "main": "server.js",
+  "directories": {
+    "start": "node server",
+    "test": "mocha test"
+  },
+  "scripts": {
+    "test": "mocha test",
+    "start": "node server.js"
+  },
+  "author": "Michael J Erwin <michaeljameserwin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "express": "^4.13.1",
+    "jsonwebtoken": "^5.0.4",
+    "monk": "^1.0.1"
+  },
+  "devDependencies": {
+    "morgan": "^1.6.1"
+  }
+}
