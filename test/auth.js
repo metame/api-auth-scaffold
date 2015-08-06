@@ -1,8 +1,9 @@
 var request = require('superagent'),
     expect = require('expect.js'),
+    config = require('../config'),
     db = require('../lib/mongodb.js'),
     users = db.get('users');
-    host = 'localhost:8080';
+    base = config.host + ':' + config.port;
 
 describe('Authentication', function(){
     var authUser = {
@@ -28,7 +29,7 @@ describe('Authentication', function(){
     });
 
     it('should reject request without auth', function(done){
-        request.get(host + '/api')
+        request.get(base + '/api')
         .set('Accept', 'application/json')
         .end(function(err, res){
             expect(err).to.exist;
@@ -41,7 +42,7 @@ describe('Authentication', function(){
 
 
     it('should accept valid auth credentials', function(done){
-        request.post(host + '/api/authenticate')
+        request.post(base + '/api/authenticate')
         .send(authUser)
         .set('Accept', 'application/json')
         .end(function(err, res){
